@@ -18,7 +18,7 @@ return new class extends Migration
             $table->decimal('price', $precision = 8, $scale = 2);
             $table->foreignId('categories_id')->constrained();
             $table->foreignId('suppliers_id')->constrained();
-            $table->foreignId('models_id')->constrained();
+            $table->foreignId('car_models_id')->constrained();
             $table->timestamps();
         });
     }
