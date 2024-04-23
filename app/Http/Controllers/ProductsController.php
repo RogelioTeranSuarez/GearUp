@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product;
 
 class ProductsController extends Controller
 {
@@ -11,7 +12,8 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::all();
+        return $products;
     }
 
     /**
@@ -19,7 +21,7 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -27,7 +29,23 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            
+            'categories_id' => 'required|exists:categories,id',
+            'suppliers_id' => 'required|exists:suppliers,id',
+            'car_models_id' => 'required|exists:car_models,id',
+        ]);
+
+        $product = Product::create([
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'price' => $request->input('price'),
+            'categories_id' => $request->input('categories_id'),
+            'suppliers_id' => $request->input('suppliers_id'),
+            'car_models_id' => $request->input('car_models_id'),
+        ]);
+
+        return response()->json(['message' => 'Producto agregado'], 201);
     }
 
     /**
@@ -35,7 +53,7 @@ class ProductsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        
     }
 
     /**
