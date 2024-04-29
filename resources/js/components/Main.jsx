@@ -1,30 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React from "react";
+import { Navigate, Routes, Route } from "react-router-dom";
+
+import Menu from "./Menu";
+import Home from "./Home";
+
 
 function Main() {
     return (
-        <div className="container">
-            <div className="row justify-content-center">
-                <div className="col-md-8">
-                    <div className="card">
-                        <div className="card-header">Example Component</div>
+        <Routes>
+            <Route path="/" element={<Menu />}>
+                <Route index element={<Home />} />
+                <Route path="*" element={<Navigate replace to="/" />} />
+            </Route>
 
-                        <div className="card-body">I'm an example component!</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+        </Routes>
     );
 }
 
 export default Main;
-
-if (document.getElementById('app')) {
-    const Index = ReactDOM.createRoot(document.getElementById("app"));
-
-    Index.render(
-        <React.StrictMode>
-            <Main/>
-        </React.StrictMode>
-    )
-}

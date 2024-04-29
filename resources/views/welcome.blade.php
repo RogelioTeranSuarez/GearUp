@@ -12,31 +12,24 @@
 
         <!-- Styles -->
         <style>
-           
         </style>
-
         <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
         rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-        crossorigin="anonymous"
-        />
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+        crossorigin="anonymous"/>
+
+        <link rel="icon" href="{{ asset('icono.png') }}" type="image/png">
+        <link rel="shortcut icon" href="{{ asset('icono.png') }}" type="image/png">
+
 
         @viteReactRefresh
-        @vite('resources/js/app.js')
+        @vite('resources/js/app.jsx')
     </head>
-    <body class="antialiased">
-       <div id="app">
+    <body>
+        <div id="app"></div>
         <script src="https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js" crossorigin></script>
-
-        <script
-        src="https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.production.min.js"
-        crossorigin></script>
-
-        <script
-        src="https://cdn.jsdelivr.net/npm/react-bootstrap@next/dist/react-bootstrap.min.js"
-        crossorigin></script>
-        
-       </div>
+        <script src="https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.production.min.js" crossorigin></script>
+        <script src="https://cdn.jsdelivr.net/npm/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
     </body>
 </html>
