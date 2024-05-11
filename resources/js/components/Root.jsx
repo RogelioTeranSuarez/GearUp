@@ -1,21 +1,19 @@
 import React from "react";
 import { Navigate, Routes, Route } from "react-router-dom";
-
-import Menu from "./Menu";
 import Home from "./Home";
+import Menu from "./Menu";
+import Catalog from "./Catalog";
 
-
-function Main() {
+function Root() {
     return (
         <Routes>
             <Route path="/" element={<Menu />}>
-                <Route index element={<Home />} />
+                <Route path="Home" element={<Home />} />
+                <Route path="Catalog" element={<Catalog />} />
                 <Route path="*" element={<Navigate replace to="/" />} />
             </Route>
-
-
         </Routes>
     );
 }
 
-export default Main;
+export default Root;
