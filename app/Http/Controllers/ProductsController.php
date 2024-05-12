@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Exception;
 use App\Models\Product;
 
 class ProductsController extends Controller
@@ -12,8 +14,8 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
-        return $products;
+        $students = DB::table('products')->get();
+        return $students;
     }
 
     /**
@@ -21,7 +23,7 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        
+
     }
 
     /**
@@ -30,7 +32,7 @@ class ProductsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            
+
             'categories_id' => 'required|exists:categories,id',
             'suppliers_id' => 'required|exists:suppliers,id',
             'car_models_id' => 'required|exists:car_models,id',
@@ -53,7 +55,12 @@ class ProductsController extends Controller
      */
     public function show(string $id)
     {
-        
+        try {
+            $product = Product::findOrFail($id);
+            return response()->json($product);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Se produjo un error al intentar mostrar: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -69,7 +76,29 @@ class ProductsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $product = Product::findOrFail($id);
+            $data = $request->only([
+                'name',
+                'description',
+                'price',
+                'categories_id',
+                'suppliers_id',
+                'car_models_id',
+            ]);
+
+            if ($request->hasFile('Image')) {
+                $imagePath = $request->file('Image')->store('');
+                $data['Image'] = $imagePath;
+            }
+
+            $product->fill($data);
+            $product->save();
+
+            return response()->json(["success" => 'Product updated: ' . $product], 200);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'An error occurred when trying to update: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
