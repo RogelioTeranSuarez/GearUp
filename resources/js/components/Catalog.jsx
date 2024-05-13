@@ -54,7 +54,7 @@ function Catalog() {
         {products.map(product => (
           <Col xs={12} md={6} lg={3} key={product.id}>
             <Card style={{ margin: '30px 15px', backgroundColor: '#333', color: '#fff', height: '90%' }}>
-              <Card.Img variant="top" src={product.image} />
+              <Card.Img variant="top" src={'http://localhost:3000/images/'+product.image} />
               <Card.Body >
                 <Card.Title>{product.name}</Card.Title>
                 <Card.Text>{product.description}</Card.Text>
