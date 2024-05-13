@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->decimal('price', $precision = 8, $scale = 2);
+            $table->string('image');
             $table->foreignId('categories_id')->constrained();
             $table->foreignId('suppliers_id')->constrained();
             $table->foreignId('car_models_id')->constrained();

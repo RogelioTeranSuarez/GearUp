@@ -31,23 +31,35 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        try {
+            $request->validate([
 
-            'categories_id' => 'required|exists:categories,id',
-            'suppliers_id' => 'required|exists:suppliers,id',
-            'car_models_id' => 'required|exists:car_models,id',
-        ]);
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:20240',
+                'categories_id' => 'required|exists:categories,id',
+                'suppliers_id' => 'required|exists:suppliers,id',
+                'car_models_id' => 'required|exists:car_models,id',
+            ]);
 
-        $product = Product::create([
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
-            'price' => $request->input('price'),
-            'categories_id' => $request->input('categories_id'),
-            'suppliers_id' => $request->input('suppliers_id'),
-            'car_models_id' => $request->input('car_models_id'),
-        ]);
+            
+            $image = $request->file('image');
 
-        return response()->json(['message' => 'Producto agregado'], 201);
+            $path = $image->store('');
+
+
+            $product = Product::create([
+                'name' => $request->input('name'),
+                'description' => $request->input('description'),
+                'price' => $request->input('price'),
+                'Image' => $path->input('image'),
+                'categories_id' => $request->input('categories_id'),
+                'suppliers_id' => $request->input('suppliers_id'),
+                'car_models_id' => $request->input('car_models_id'),
+            ]);
+
+            return response()->json(['message' => 'Producto agregado: ' . $product], 201);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Se produjo un error al intentar almacenar: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -87,11 +99,6 @@ class ProductsController extends Controller
                 'car_models_id',
             ]);
 
-            if ($request->hasFile('Image')) {
-                $imagePath = $request->file('Image')->store('');
-                $data['Image'] = $imagePath;
-            }
-
             $product->fill($data);
             $product->save();
 
@@ -107,5 +114,22 @@ class ProductsController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function upload(Request $request, string $id)
+    {
+        try {
+            $product = Product::findOrFail($id);
+
+            if ($request->hasFile('Image')) {
+                $imagePath = $request->file('Image')->store('');
+                $product->Image = $imagePath;
+                $product->save();
+            }
+
+            return response()->json(["success" => 'Image uploaded: ' . $product], 200);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'An error occurred when trying to upload: ' . $e->getMessage()], 500);
+        }
     }
 }

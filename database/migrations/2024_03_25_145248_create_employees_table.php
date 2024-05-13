@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('address');
             $table->string('phone');
-            $table->string('CURP');
+            $table->string('SSN');
             $table->foreignId('roles_id')->constrained();
             $table->timestamps();
         });
