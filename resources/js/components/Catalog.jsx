@@ -5,6 +5,7 @@ function Catalog() {
     const [products, setProducts] = useState([]);
     const [ModelsNames, setModelName] = useState({});
     const [categoriesNames, setCategorieName] = useState({});
+    const [suppliersNames, setSuppliersName] = useState({});
     
   
     useEffect(() => {
@@ -56,9 +57,29 @@ function Catalog() {
           setCategorieName(categoriesNameMap);
         };
     
+
+        const fetchsuppliersName = async () => {
+          const suppliersNameMap = {};
+          for (const product of products) {
+            const suppliersId = product.suppliers_id;
+            if (!suppliersNameMap[suppliersId]) {
+              try {
+                const response = await axios.get(`http://localhost/public/api/supplier/${suppliersId}`);
+                suppliersNameMap[suppliersId] = response.data.name;
+              } catch (error) {
+                console.error(`Error fetching program data for program ID ${suppliersId}:`, error);
+                suppliersNameMap[suppliersId] = "Programa no encontrado";
+              }
+            }
+          }
+          setSupplierName(suppliersNameMap);
+        };
+
+
         if (products.length > 0) {
           fetchcategoriesName();
           fetchModelName();
+          fetchsuppliersName();
         }
       }, [products]);
 
@@ -79,7 +100,7 @@ function Catalog() {
             <span>Precio: {product.price}</span>
           </div>
           <div>
-            <span>Proveedor: {product.suppliers_id}</span>
+            <span>Proveedor: {suppliersNames[product.suppliers_id]}</span>
           </div>
         </div>
       ))}

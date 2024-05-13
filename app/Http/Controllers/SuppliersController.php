@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Exception;
+use Illuminate\Support\Facades\DB;
 
 class SuppliersController extends Controller
 {
@@ -11,7 +14,8 @@ class SuppliersController extends Controller
      */
     public function index()
     {
-        //
+        $supplier = DB::table('suppliers')->get();
+        return $supplier;
     }
 
     /**
@@ -35,7 +39,12 @@ class SuppliersController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $supplier = Supplier::findOrFail($id);
+            return response()->json($supplier);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Se produjo un error al intentar mostrar: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
