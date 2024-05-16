@@ -18,4 +18,8 @@ class Supplier extends Model
         return $this->hasMany(Product::class);
     }
 
+    public function carModel()
+    {
+        return $this->hasMany(Car_Model::class);
+    }
 }

@@ -33,29 +33,21 @@ class ProductsController extends Controller
     {
         try {
             $request->validate([
-
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:20240',
                 'categories_id' => 'required|exists:categories,id',
                 'suppliers_id' => 'required|exists:suppliers,id',
                 'car_models_id' => 'required|exists:car_models,id',
             ]);
-
-            
-            $image = $request->file('image');
-
-            $path = $image->store('');
-
-
+    
+            // Crear el producto sin incluir el campo de imagen
             $product = Product::create([
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
                 'price' => $request->input('price'),
-                'Image' => $path->input('image'),
                 'categories_id' => $request->input('categories_id'),
                 'suppliers_id' => $request->input('suppliers_id'),
                 'car_models_id' => $request->input('car_models_id'),
             ]);
-
+    
             return response()->json(['message' => 'Producto agregado: ' . $product], 201);
         } catch (Exception $e) {
             return response()->json(['error' => 'Se produjo un error al intentar almacenar: ' . $e->getMessage()], 500);
@@ -98,12 +90,12 @@ class ProductsController extends Controller
                 'suppliers_id',
                 'car_models_id',
             ]);
-
+    
             $product->fill($data);
             $product->save();
-
-            return response()->json(["success" => 'Product updated: ' . $product], 200);
-        } catch (Exception $e) {
+    
+            return response()->json(["success" => 'Product updated successfully'], 200);
+        } catch (\Throwable $e) {
             return response()->json(['error' => 'An error occurred when trying to update: ' . $e->getMessage()], 500);
         }
     }
@@ -113,7 +105,14 @@ class ProductsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $product = Product::findOrFail($id);
+            $product->delete();
+            
+            return response()->json(["success" => 'Product deleted successfully.'], 200);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'An error occurred when trying to delete: ' . $e->getMessage()], 500);
+        }
     }
 
     public function upload(Request $request, string $id)

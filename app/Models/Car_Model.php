@@ -11,10 +11,15 @@ class Car_Model extends Model
 
     protected $table = 'car_models';
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name','suppliers_id'];
 
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
     }
 }

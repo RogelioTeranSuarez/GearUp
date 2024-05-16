@@ -19,16 +19,14 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-    
+        $this->call(SupplierSeeder::class);
+
         $this->call(CarModelsSeeder::class);
         $this->call(CategoriesSeeder::class);
         $this->call(RoleSeeder::class);
 
         $this->call(EmployeesSeeder::class);
         
-       
-        $this->call(SupplierSeeder::class);
-
         $this->call(ProductSeeder::class);
         $this->call(InventorySeeder::class);
         
