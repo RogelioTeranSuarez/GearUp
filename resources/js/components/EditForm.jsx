@@ -16,6 +16,44 @@ function EditForm({ show, handleCloseModal, handleSave, product, productImageUrl
     const [imageFile, setImageFile] = useState(product.image ? new File([], product.image) : null);
     const [previewImage, setPreviewImage] = useState(product.image ? product.image : null);
 
+    const [categoryNames, setCategoryNames] = useState({});
+    const [supplierNames, setSupplierNames] = useState({});
+    const [carModelNames, setCarModelNames] = useState({});
+
+    const fetchData = async () => {
+        try {
+            const [categoriesResponse, suppliersResponse, carModelsResponse] = await Promise.all([
+                axios.get("http://localhost/public/api/categories"),
+                axios.get("http://localhost/public/api/supplier"),
+                axios.get("http://localhost/public/api/carModel")
+            ]);
+
+            const categoriesMap = {};
+            categoriesResponse.data.forEach(category => {
+                categoriesMap[category.id] = category.name;
+            });
+            setCategoryNames(categoriesMap);
+
+            const suppliersMap = {};
+            suppliersResponse.data.forEach(supplier => {
+                suppliersMap[supplier.id] = supplier.name;
+            });
+            setSupplierNames(suppliersMap);
+
+            const carModelsMap = {};
+            carModelsResponse.data.forEach(carModel => {
+                carModelsMap[carModel.id] = carModel.name;
+            });
+            setCarModelNames(carModelsMap);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     useEffect(() => {
         setFormData({
             name: product.name,
@@ -145,7 +183,7 @@ function EditForm({ show, handleCloseModal, handleSave, product, productImageUrl
                         <Form.Control
                             type="file"
                             name="image"
-                            onChange={handleImageChange} 
+                            onChange={handleImageChange}
                             style={{ backgroundColor: '#444', color: '#fff' }}
                         />
                         {previewImage && <img src={previewImage} alt="Product Image" style={{ maxWidth: '100%', marginTop: '10px' }} />}
@@ -183,32 +221,50 @@ function EditForm({ show, handleCloseModal, handleSave, product, productImageUrl
                     <Form.Group controlId="categories_id">
                         <Form.Label>Category</Form.Label>
                         <Form.Control
-                            type="text"
+                            as="select"
                             name="categories_id"
                             value={formData.categories_id}
                             onChange={handleChange}
                             style={{ backgroundColor: '#444', color: '#fff' }}
-                        />
+                        >
+                            {Object.keys(categoryNames).map(categoryId => (
+                                <option key={categoryId} value={categoryId}>
+                                    {categoryNames[categoryId]}
+                                </option>
+                            ))}
+                        </Form.Control>
                     </Form.Group>
                     <Form.Group controlId="suppliers_id">
                         <Form.Label>Supplier</Form.Label>
                         <Form.Control
-                            type="text"
+                            as="select"
                             name="suppliers_id"
                             value={formData.suppliers_id}
                             onChange={handleChange}
                             style={{ backgroundColor: '#444', color: '#fff' }}
-                        />
+                        >
+                            {Object.keys(supplierNames).map(supplierId => (
+                                <option key={supplierId} value={supplierId}>
+                                    {supplierNames[supplierId]}
+                                </option>
+                            ))}
+                        </Form.Control>
                     </Form.Group>
                     <Form.Group controlId="car_models_id">
                         <Form.Label>Car Model</Form.Label>
                         <Form.Control
-                            type="text"
+                            as="select"
                             name="car_models_id"
                             value={formData.car_models_id}
                             onChange={handleChange}
                             style={{ backgroundColor: '#444', color: '#fff' }}
-                        />
+                        >
+                            {Object.keys(carModelNames).map(carModelId => (
+                                <option key={carModelId} value={carModelId}>
+                                    {carModelNames[carModelId]}
+                                </option>
+                            ))}
+                        </Form.Control>
                     </Form.Group>
                 </Form>
             </Modal.Body>
