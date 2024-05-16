@@ -135,17 +135,18 @@ function EditForm({ show, handleCloseModal, handleSave, product, productImageUrl
 
     return (
         <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
+            <Modal.Header closeButton style={{ backgroundColor: '#444', color: '#fff' }}>
                 <Modal.Title>Edit Product</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body style={{ backgroundColor: '#333', color: '#fff' }}>
                 <Form onSubmit={handleSubmit}>
-                    <Form.Group controlId="image">
+                    <Form.Group controlId="image" >
                         <Form.Label>Image</Form.Label>
                         <Form.Control
                             type="file"
                             name="image"
-                            onChange={handleImageChange}
+                            onChange={handleImageChange} 
+                            style={{ backgroundColor: '#444', color: '#fff' }}
                         />
                         {previewImage && <img src={previewImage} alt="Product Image" style={{ maxWidth: '100%', marginTop: '10px' }} />}
                     </Form.Group>
@@ -156,6 +157,7 @@ function EditForm({ show, handleCloseModal, handleSave, product, productImageUrl
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
+                            style={{ backgroundColor: '#444', color: '#fff' }}
                         />
                     </Form.Group>
                     <Form.Group controlId="description">
@@ -165,6 +167,7 @@ function EditForm({ show, handleCloseModal, handleSave, product, productImageUrl
                             name="description"
                             value={formData.description}
                             onChange={handleChange}
+                            style={{ backgroundColor: '#444', color: '#fff' }}
                         />
                     </Form.Group>
                     <Form.Group controlId="price">
@@ -174,6 +177,7 @@ function EditForm({ show, handleCloseModal, handleSave, product, productImageUrl
                             name="price"
                             value={formData.price}
                             onChange={handleChange}
+                            style={{ backgroundColor: '#444', color: '#fff' }}
                         />
                     </Form.Group>
                     <Form.Group controlId="categories_id">
@@ -183,6 +187,7 @@ function EditForm({ show, handleCloseModal, handleSave, product, productImageUrl
                             name="categories_id"
                             value={formData.categories_id}
                             onChange={handleChange}
+                            style={{ backgroundColor: '#444', color: '#fff' }}
                         />
                     </Form.Group>
                     <Form.Group controlId="suppliers_id">
@@ -192,6 +197,7 @@ function EditForm({ show, handleCloseModal, handleSave, product, productImageUrl
                             name="suppliers_id"
                             value={formData.suppliers_id}
                             onChange={handleChange}
+                            style={{ backgroundColor: '#444', color: '#fff' }}
                         />
                     </Form.Group>
                     <Form.Group controlId="car_models_id">
@@ -201,11 +207,12 @@ function EditForm({ show, handleCloseModal, handleSave, product, productImageUrl
                             name="car_models_id"
                             value={formData.car_models_id}
                             onChange={handleChange}
+                            style={{ backgroundColor: '#444', color: '#fff' }}
                         />
                     </Form.Group>
                 </Form>
             </Modal.Body>
-            <Modal.Footer>
+            <Modal.Footer style={{ backgroundColor: '#444', color: '#fff' }}>
                 <Button variant="secondary" onClick={handleClose}>
                     Cancel
                 </Button>

@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Card from 'react-bootstrap/Card';
-import ListGroup from 'react-bootstrap/ListGroup';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { Card, ListGroup, Container, Row, Col, Button} from 'react-bootstrap';
 import EditForm from './EditForm';
 
 function Catalog() {
@@ -105,7 +101,7 @@ function Catalog() {
                 </ListGroup.Item>
               </ListGroup>
               <Card.Body style={{ backgroundColor: '#444', color: '#fff', textAlign: 'center', fontSize: '15px' }}>
-                <Card.Link href="#" onClick={() => handleEdit(product)}>Edit Product</Card.Link>
+                <Button variant="primary" href="#" onClick={() => handleEdit(product)}>Edit Product</Button>
                 {/* Asegúrate de reemplazar "#" con la ruta correcta para editar el producto */}
               </Card.Body>
             </Card>

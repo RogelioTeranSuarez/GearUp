@@ -14,7 +14,6 @@ function Menu() {
         </Row>
         <Row className="justify-content-center align-items-center" style={{ paddingTop: '30%', fontSize: '24px' }}>
           <Nav className="d-flex justify-content-center">
-            <Button variant="outline-light" as={Link} to="Home" style={{ width: '90%', marginBottom: '10px' }}>Home</Button>
             <Button variant="outline-light" as={Link} to="Catalog" style={{ width: '90%', marginBottom: '10px' }}>Catalog</Button>
             <Button variant="outline-light" as={Link} to="Suppliers" style={{ width: '90%', marginBottom: '10px' }}>Suppliers</Button>
           </Nav>
