@@ -60,7 +60,21 @@ class SuppliersController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $supplier = Supplier::findOrFail($id);
+            $data = $request->only([
+                'name',
+                'address',
+                'phone',            
+            ]);
+    
+            $supplier->fill($data);
+            $supplier->save();
+    
+            return response()->json(["success" => 'SupplierS updated successfully'], 200);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => 'An error occurred when trying to update: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -68,6 +82,13 @@ class SuppliersController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $supplier = Supplier::findOrFail($id);
+            $supplier->delete();
+            
+            return response()->json(["success" => 'Supplier deleted successfully.'], 200);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'An error occurred when trying to delete: ' . $e->getMessage()], 500);
+        }
     }
 }

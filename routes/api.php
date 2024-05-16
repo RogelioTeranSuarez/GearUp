@@ -33,8 +33,9 @@ Route::post('/products/{id}/upload', [ProductsController::class, 'upload']);
 Route::get('/categories', [CategoriesController::class, 'index']);
 Route::get('/categories/{id}', [CategoriesController::class, 'show']);
 
-Route::get('/supplier', [SuppliersController::class, 'index']);
-Route::get('/supplier/{id}', [SuppliersController::class, 'show']);
+Route::get('/suppliers', [SuppliersController::class, 'index']);
+Route::get('/suppliers/{id}', [SuppliersController::class, 'show']);
+Route::post('/suppliersUPDT/{id}', [SuppliersController::class, 'update']);
 
 Route::get('/carModel', [Car_modelsController::class, 'index']);
 Route::get('/carModel/{id}', [Car_modelsController::class, 'show']);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 
-function EditForm({ show, handleCloseModal, handleSave, product, productImageUrl }) {
+function EditFormCat({ show, handleCloseModal, handleSave, product, productImageUrl }) {
     const [formData, setFormData] = useState({
         name: product.name,
         description: product.description,
@@ -280,4 +280,4 @@ function EditForm({ show, handleCloseModal, handleSave, product, productImageUrl
     );
 }
 
-export default EditForm;
+export default EditFormCat;

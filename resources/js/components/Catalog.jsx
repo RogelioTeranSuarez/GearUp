@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Card, ListGroup, Container, Row, Col, Button} from 'react-bootstrap';
-import EditForm from './EditForm';
+import EditFormCat from './EditFormCat';
 
 function Catalog() {
   const [products, setProducts] = useState([]);
@@ -40,7 +40,7 @@ function Catalog() {
       const [productsResponse, categoriesResponse, suppliersResponse, carModelsResponse] = await Promise.all([
         axios.get("http://localhost/public/api/products"),
         axios.get("http://localhost/public/api/categories"),
-        axios.get("http://localhost/public/api/supplier"),
+        axios.get("http://localhost/public/api/suppliers"),
         axios.get("http://localhost/public/api/carModel")
       ]);
 
@@ -102,14 +102,13 @@ function Catalog() {
               </ListGroup>
               <Card.Body style={{ backgroundColor: '#444', color: '#fff', textAlign: 'center', fontSize: '15px' }}>
                 <Button variant="primary" href="#" onClick={() => handleEdit(product)}>Edit Product</Button>
-                {/* Asegúrate de reemplazar "#" con la ruta correcta para editar el producto */}
               </Card.Body>
             </Card>
           </Col>
         ))}
       </Row>
       {selectedProduct && (
-        <EditForm
+        <EditFormCat
           show={showModal}
           handleCloseModal={handleCloseModal}
           handleSave={handleSaveChanges}
