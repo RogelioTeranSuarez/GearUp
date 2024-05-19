@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Support\Facades\DB;
-use App\Models\Car_Model;
+use App\Models\Inventory;
 use Exception;
 use Illuminate\Http\Request;
 
-class Car_modelsController extends Controller
+class InventoryController extends Controller
 {
-    /**
+        /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $carModel = DB::table('car_models')->get();
-        return $carModel;
+        $inventory = DB::table('inventory')->get();
+        return $inventory;
     }
 
     /**
@@ -33,16 +34,18 @@ class Car_modelsController extends Controller
     {
         try {
             $request->validate([                
-                'suppliers_id' => 'required|exists:suppliers,id',
+                'products_id' => 'required|exists:products,id',
             ]);
     
             // Crear el producto sin incluir el campo de imagen
-            $carModel = Car_Model::create([
-                'name' => $request->input('name'),
-                'suppliers_id' => $request->input('suppliers_id'),
+            $inventory = Inventory::create([
+                'quantity' => $request->input('quantity'),
+                'cost_per_unit' => $request->input('cost_per_unit'),
+                'date' => $request->input('date'),
+                'products_id' => $request->input('products_id'),
             ]);
     
-            return response()->json(['message' => 'Car model agregado: ' . $carModel], 201);
+            return response()->json(['message' => 'Car model agregado: ' . $inventory], 201);
         } catch (Exception $e) {
             return response()->json(['error' => 'Se produjo un error al intentar almacenar: ' . $e->getMessage()], 500);
         }
@@ -54,8 +57,8 @@ class Car_modelsController extends Controller
     public function show(string $id)
     {
         try {
-            $carModel = Car_Model::findOrFail($id);
-            return response()->json($carModel);
+            $inventory = Inventory::findOrFail($id);
+            return response()->json($inventory);
         } catch (Exception $e) {
             return response()->json(['error' => 'Se produjo un error al intentar mostrar: ' . $e->getMessage()], 500);
         }
@@ -76,14 +79,16 @@ class Car_modelsController extends Controller
     public function update(Request $request, string $id)
     {
         try {
-            $carModel = Car_Model::findOrFail($id);
+            $inventory = Inventory::findOrFail($id);
             $data = $request->only([
-                'name',
-                'suppliers_id',
+                'quantity',
+                'cost_per_unit',
+                'date',
+                'products_id',
             ]);
     
-            $carModel->fill($data);
-            $carModel->save();
+            $inventory->fill($data);
+            $inventory->save();
     
             return response()->json(["success" => 'Car model updated successfully'], 200);
         } catch (\Throwable $e) {
@@ -96,18 +101,6 @@ class Car_modelsController extends Controller
      */
     public function destroy($id)
     {
-        try {
-            $model = Car_Model::findOrFail($id);
-            $model->delete();
-    
-            return response()->json(["success" => 'Model deleted successfully.'], 200);
-        } catch (\Illuminate\Database\QueryException $e) {
-            if ($e->getCode() === '23000') { // Código de error de integridad referencial en MySQL
-                return response()->json(['error' => 'Cannot delete this model because it is associated with one or more products.'], 400);
-            }
-            return response()->json(['error' => 'An error occurred when trying to delete: ' . $e->getMessage()], 500);
-        } catch (Exception $e) {
-            return response()->json(['error' => 'An error occurred when trying to delete: ' . $e->getMessage()], 500);
-        }
+        //
     }
 }

@@ -31,7 +31,17 @@ class SuppliersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $supplier = Supplier::create([
+                'name' => $request->input('name'),
+                'address' => $request->input('address'),
+                'phone' => $request->input('phone'),
+            ]);
+
+            return response()->json(['message' => 'Car model agregado: ' . $supplier], 201);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Se produjo un error al intentar almacenar: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -65,12 +75,12 @@ class SuppliersController extends Controller
             $data = $request->only([
                 'name',
                 'address',
-                'phone',            
+                'phone',
             ]);
-    
+
             $supplier->fill($data);
             $supplier->save();
-    
+
             return response()->json(["success" => 'SupplierS updated successfully'], 200);
         } catch (\Throwable $e) {
             return response()->json(['error' => 'An error occurred when trying to update: ' . $e->getMessage()], 500);
@@ -85,7 +95,7 @@ class SuppliersController extends Controller
         try {
             $supplier = Supplier::findOrFail($id);
             $supplier->delete();
-            
+
             return response()->json(["success" => 'Supplier deleted successfully.'], 200);
         } catch (Exception $e) {
             return response()->json(['error' => 'An error occurred when trying to delete: ' . $e->getMessage()], 500);

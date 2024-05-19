@@ -31,7 +31,15 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $categorie = Category::create([
+                'name' => $request->input('name'),
+            ]);
+    
+            return response()->json(['message' => 'Car model agregado: ' . $categorie], 201);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Se produjo un error al intentar almacenar: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -60,7 +68,19 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $categorie = Category::findOrFail($id);
+            $data = $request->only([
+                'name',
+            ]);
+    
+            $categorie->fill($data);
+            $categorie->save();
+    
+            return response()->json(["success" => 'Car model updated successfully'], 200);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => 'An error occurred when trying to update: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -68,6 +88,13 @@ class CategoriesController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $categorie = Category::findOrFail($id);
+            $categorie->delete();
+            
+            return response()->json(["success" => 'categorie deleted successfully.'], 200);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'An error occurred when trying to delete: ' . $e->getMessage()], 500);
+        }
     }
 }

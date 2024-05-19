@@ -14,8 +14,8 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $students = DB::table('products')->get();
-        return $students;
+        $products = DB::table('products')->get();
+        return $products;
     }
 
     /**
@@ -103,13 +103,18 @@ class ProductsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         try {
             $product = Product::findOrFail($id);
             $product->delete();
-            
-            return response()->json(["success" => 'Product deleted successfully.'], 200);
+    
+            return response()->json(["success" => 'Model deleted successfully.'], 200);
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() === '23000') { // Código de error de integridad referencial en MySQL
+                return response()->json(['error' => 'Cannot delete this model because it is associated with one or more products.'], 400);
+            }
+            return response()->json(['error' => 'An error occurred when trying to delete: ' . $e->getMessage()], 500);
         } catch (Exception $e) {
             return response()->json(['error' => 'An error occurred when trying to delete: ' . $e->getMessage()], 500);
         }

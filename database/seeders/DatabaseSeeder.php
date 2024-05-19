@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
         
         $this->call(TransactionsSeeder::class);
         
+        $this->call(UserSeeder::class);
         
     }
 }

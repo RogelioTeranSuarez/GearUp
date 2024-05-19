@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transaction;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Exception;
 
 class TransactionsController extends Controller
 {
@@ -11,7 +14,8 @@ class TransactionsController extends Controller
      */
     public function index()
     {
-        //
+        $tran = DB::table('transactions')->get();
+        return $tran;
     }
 
     /**
@@ -27,7 +31,23 @@ class TransactionsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $request->validate([                
+                'employesss_id' => 'required|exists:employees,id',
+            ]);
+    
+            // Crear el producto sin incluir el campo de imagen
+            $tran = Transaction::create([
+                'transaction_type' => $request->input('transaction_type'),
+                'date' => $request->input('date'),
+                'total' => $request->input('total'),
+                'employees_id' => $request->input('employees_id'),
+            ]);
+    
+            return response()->json(['message' => 'Car model agregado: ' . $tran], 201);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Se produjo un error al intentar almacenar: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -35,7 +55,12 @@ class TransactionsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $tran = Transaction::findOrFail($id);
+            return response()->json($tran);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Se produjo un error al intentar mostrar: ' . $e->getMessage()], 500);
+        }
     }
 
     /**

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import React, { useState, useEffect, useContext } from "react";
+import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import axios from "axios";
+import { AuthContext } from "./AuthProvider";
 
 function EditFormSup({ show, handleCloseModal, handleSave, supplier }) {
     const [formData, setFormData] = useState({
@@ -8,6 +9,8 @@ function EditFormSup({ show, handleCloseModal, handleSave, supplier }) {
         address: supplier.address,
         phone: supplier.phone,
     });
+
+    const { auth } = useContext(AuthContext);
 
     useEffect(() => {
         setFormData({
@@ -51,14 +54,17 @@ function EditFormSup({ show, handleCloseModal, handleSave, supplier }) {
         data.append('name', formData.name);
         data.append('address', formData.address);
         data.append('phone', formData.phone);
-    
-        axios.post(`http://localhost/public/api/suppliersUPDT/${supplier.id}`, data)
+
+        axios.post(`http://localhost/public/api/suppliers/${supplier.id}`, data , {
+            headers: {
+                Authorization: `Bearer ${auth.token}` // Agrega el token de autenticación aquí
+            }
+        })
             .then(res => {
                 // Llamar a la función handleSave para actualizar la interfaz con los datos actualizados
                 handleSave(formData);
             })
             .catch(err => console.error(err));
-            
     };
 
     return (
@@ -101,12 +107,18 @@ function EditFormSup({ show, handleCloseModal, handleSave, supplier }) {
                 </Form>
             </Modal.Body>
             <Modal.Footer style={{ backgroundColor: '#444', color: '#fff' }}>
-                <Button variant="secondary" onClick={handleClose}>
-                    Cancel
-                </Button>
-                <Button variant="primary" onClick={handleSubmit}>
-                    Save Changes
-                </Button>
+                <Row style={{ width: '100%' }}>
+                    <Col xs={6} style={{ textAlign: 'right' }}>
+                        <Button style={{ width: '80%' }} variant="secondary" onClick={handleClose}>
+                            Cancel
+                        </Button>
+                    </Col>
+                    <Col xs={6} style={{ textAlign: 'left' }}>
+                        <Button style={{ width: '80%' }} variant="primary" onClick={handleSubmit}>
+                            Save Changes
+                        </Button>
+                    </Col>
+                </Row>
             </Modal.Footer>
         </Modal>
     );

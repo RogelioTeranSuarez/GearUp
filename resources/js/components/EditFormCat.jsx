@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import React, { useState, useEffect, useContext } from "react";
+import { Modal, Button, Form, Row, Col } from "react-bootstrap";
+import { AuthContext } from "./AuthProvider";
 
 function EditFormCat({ show, handleCloseModal, handleSave, product, productImageUrl }) {
     const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ function EditFormCat({ show, handleCloseModal, handleSave, product, productImage
         image: product.image
     });
 
+    const { auth } = useContext(AuthContext);
 
     const [imageFile, setImageFile] = useState(product.image ? new File([], product.image) : null);
     const [previewImage, setPreviewImage] = useState(product.image ? product.image : null);
@@ -23,9 +25,21 @@ function EditFormCat({ show, handleCloseModal, handleSave, product, productImage
     const fetchData = async () => {
         try {
             const [categoriesResponse, suppliersResponse, carModelsResponse] = await Promise.all([
-                axios.get("http://localhost/public/api/categories"),
-                axios.get("http://localhost/public/api/supplier"),
-                axios.get("http://localhost/public/api/carModel")
+                axios.get("http://localhost/public/api/categories", {
+                    headers: {
+                        Authorization: `Bearer ${auth.token}` // Agrega el token de autenticación aquí
+                    }
+                }),
+                axios.get("http://localhost/public/api/suppliers", {
+                    headers: {
+                        Authorization: `Bearer ${auth.token}` // Agrega el token de autenticación aquí
+                    }
+                }),
+                axios.get("http://localhost/public/api/carModel", {
+                    headers: {
+                        Authorization: `Bearer ${auth.token}` // Agrega el token de autenticación aquí
+                    }
+                }),
             ]);
 
             const categoriesMap = {};
@@ -163,7 +177,11 @@ function EditFormCat({ show, handleCloseModal, handleSave, product, productImage
             data.append('image', imageFile);
         }
 
-        axios.post(`http://localhost/public/api/productsUPDT/${product.id}`, data)
+        axios.post(`http://localhost/public/api/productsUPDT/${product.id}`, data, {
+            headers: {
+                Authorization: `Bearer ${auth.token}`
+            }
+        })
             .then(res => {
                 // Llamar a la función handleSave para actualizar la interfaz con los datos actualizados
                 handleSave(formData);
@@ -269,12 +287,18 @@ function EditFormCat({ show, handleCloseModal, handleSave, product, productImage
                 </Form>
             </Modal.Body>
             <Modal.Footer style={{ backgroundColor: '#444', color: '#fff' }}>
-                <Button variant="secondary" onClick={handleClose}>
-                    Cancel
-                </Button>
-                <Button variant="primary" onClick={handleSubmit}>
-                    Save Changes
-                </Button>
+                <Row style={{ width: '100%' }}>
+                    <Col xs={6} style={{ textAlign: 'right' }}>
+                        <Button style={{ width: '80%' }} variant="secondary" onClick={handleClose}>
+                            Cancel
+                        </Button>
+                    </Col>
+                    <Col xs={6} style={{ textAlign: 'left' }}>
+                        <Button style={{ width: '80%' }} variant="primary" onClick={handleSubmit}>
+                            Save Changes
+                        </Button>
+                    </Col>
+                </Row>
             </Modal.Footer>
         </Modal>
     );

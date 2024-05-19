@@ -13,12 +13,15 @@ import './bootstrap';
  */
 
 import ReactDOM from 'react-dom/client';
-import Root from './components/Root'
+import Root from './components/Root';
+import AuthProvider from './components/AuthProvider';
 import { BrowserRouter } from 'react-router-dom';
 
-ReactDOM.createRoot(document.getElementById('app')).render(    
-<BrowserRouter>
-        <Root/>
-</BrowserRouter>
-    
+ReactDOM.createRoot(document.getElementById('app')).render(
+        <BrowserRouter>
+                <AuthProvider>
+                        <Root />
+                </AuthProvider>
+        </BrowserRouter>
+
 )

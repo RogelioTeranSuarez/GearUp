@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Exception;
 
 class RolesController extends Controller
 {
@@ -11,7 +14,8 @@ class RolesController extends Controller
      */
     public function index()
     {
-        //
+        $rol = DB::table('roles')->get();
+        return $rol;
     }
 
     /**
@@ -27,7 +31,16 @@ class RolesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $rol = Role::create([
+                'name' => $request->input('name'),
+                'description' => $request->input('description'),
+            ]);
+    
+            return response()->json(['message' => 'Rol agregado: ' . $rol], 201);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Se produjo un error al intentar almacenar: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -35,7 +48,12 @@ class RolesController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $rol = Role::findOrFail($id);
+            return response()->json($rol);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Se produjo un error al intentar mostrar: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -51,7 +69,20 @@ class RolesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $rol = Role::findOrFail($id);
+            $data = $request->only([
+                'name',
+                'description',
+            ]);
+    
+            $rol->fill($data);
+            $rol->save();
+    
+            return response()->json(["success" => 'Car model updated successfully'], 200);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => 'An error occurred when trying to update: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
