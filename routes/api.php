@@ -11,6 +11,7 @@ use App\Http\Controllers\AuthenticationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,13 +31,15 @@ Route::get('/wel', function () {
 
 Route::middleware('auth')->post('logout', [AuthenticationController::class, 'logout']);
 
-Route::get('/products/{id}', [ProductsController::class, 'show']);
-
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 Route::middleware('auth:api')->group(function () {
+
+    Route::post('/register', [UserController::class, 'register']);
+    Route::get('/user', [UserController::class, 'user_index']);
+    Route::delete('/users/deleteByEmail/{email}', [UserController::class, 'deleteByEmail']);
 
     Route::get('/products', [ProductsController::class, 'index']);
     Route::get('/products/{id}', [ProductsController::class, 'show']);

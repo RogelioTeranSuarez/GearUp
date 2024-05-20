@@ -8,6 +8,7 @@ import Accounts from "./Accounts";
 import Transactions from "./Transactions";
 import Login from "./Login";
 import ProtectedRoute from "./ProtectedRoute";
+import Profile from "./Profile";
 
 function Root() {
     return (
@@ -26,6 +27,7 @@ function Root() {
                     <Route path="accounts" element={<Accounts />} />
                     <Route path="transactions" element={<Transactions />} />
                     <Route path="fileupload" element={<FileUpload />} />
+                    <Route path="profile" element={<Profile />} />
                     <Route path="*" element={<Navigate replace to="/" />} />
                 </Route>
             </Routes>

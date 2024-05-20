@@ -22,24 +22,15 @@ function Accounts() {
     };
 
     const handleSaveChanges = async (formData) => {
-        try {
-            await axios.put(`http://localhost/public/api/employees/${selectedEmployee.id}`, formData, {
-                headers: {
-                    Authorization: `Bearer ${auth.token}` // Agrega el token de autenticación aquí
-                }
-            });
-            fetchData();
-            setShowModal(false);
-        } catch (error) {
-            console.error("Error saving changes:", error);
-        }
+        fetchData();
+        setShowModal(false);
     };
 
     const handleDelete = async (employeeId) => {
         try {
             await axios.delete(`http://localhost/public/api/employees/${employeeId}`, {
                 headers: {
-                    Authorization: `Bearer ${auth.token}` // Agrega el token de autenticación aquí
+                    Authorization: `Bearer ${auth.token}`
                 }
             });
             fetchData();
@@ -60,12 +51,12 @@ function Accounts() {
             const [employeesResponse, rolesResponse] = await Promise.all([
                 axios.get("http://localhost/public/api/employees", {
                     headers: {
-                        Authorization: `Bearer ${auth.token}` // Agrega el token de autenticación aquí
+                        Authorization: `Bearer ${auth.token}`
                     }
                 }),
                 axios.get("http://localhost/public/api/roles", {
                     headers: {
-                        Authorization: `Bearer ${auth.token}` // Agrega el token de autenticación aquí
+                        Authorization: `Bearer ${auth.token}`
                     }
                 }),
             ]);
@@ -134,6 +125,7 @@ function Accounts() {
                     handleCloseModal={handleCloseModal}
                     handleSave={handleSaveChanges}
                     employee={selectedEmployee}
+                    fetchData={fetchData}
                 />
             )}
         </Container>

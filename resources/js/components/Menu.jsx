@@ -34,7 +34,7 @@ function Menu() {
         </Row>
         <Row className="justify-content-center align-items-center" style={{ paddingTop: '30%', fontSize: '24px' }}>
           <Nav className="d-flex justify-content-center">
-            <Button variant="outline-light" as={Link} to="ProfileDs" style={{ width: '90%', marginBottom: '10px' }}>Profile</Button>
+            <Button variant="outline-light" as={Link} to="Profile" style={{ width: '90%', marginBottom: '10px' }}>Profile</Button>
             <Button variant="outline-danger" onClick={handleLogout} style={{ width: '90%', marginBottom: '10px' }}>Log Out</Button>
           </Nav>
         </Row>

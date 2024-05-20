@@ -67,4 +67,17 @@ class UserController extends Controller
 
         return response()->json(['error' => 'Usuario no autenticado'], 401);
     }
+
+    public function deleteByEmail(Request $request, $email)
+    {
+        $user = User::where('email', $email)->first();
+    
+        if (!$user) {
+            return response(['message' => 'User not found'], 404);
+        }
+    
+        $user->delete();
+    
+        return response(['message' => 'User deleted successfully']);
+    }
 }
